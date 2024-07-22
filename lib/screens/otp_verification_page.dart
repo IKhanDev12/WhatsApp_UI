@@ -1,22 +1,12 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:whats_app_ui/screens/otp_verification_page.dart';
+import 'home_page.dart';
 
-class WhatsAppAuthorization extends StatefulWidget {
-  static const String id = 'auth_screen';
-  const WhatsAppAuthorization({super.key});
+class OTPVerificationPage extends StatelessWidget {
+  static const String id = 'otp_verification';
 
-  @override
-  State<WhatsAppAuthorization> createState() => _WhatsAppAuthorizationState();
-}
-final phoneController = TextEditingController();
+  final String otp;
 
-class _WhatsAppAuthorizationState extends State<WhatsAppAuthorization> {
-  String generateOTP() {
-    var rng = Random();
-    return (rng.nextInt(900000) + 100000).toString(); // Generates a 6-digit OTP
-  }
+  const OTPVerificationPage({required this.otp});
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +15,11 @@ class _WhatsAppAuthorizationState extends State<WhatsAppAuthorization> {
       appBar: AppBar(
         backgroundColor: Colors.teal,
         title: const Center(
-            child: Text(
-          'Phone number',
-          style: TextStyle(color: Colors.white70),
-        )),
+          child: Text(
+            'Enter OTP',
+            style: TextStyle(color: Colors.white70),
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -37,44 +28,33 @@ class _WhatsAppAuthorizationState extends State<WhatsAppAuthorization> {
           children: [
             const Center(
               child: Text(
-                'Please confirm your country code and\nenter your phone number',
+                'Please enter the six digits OTP sent to your phone',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 15, color: Colors.white70),
               ),
             ),
-            const SizedBox(
-              height: 30,
-            ),
-            IntlPhoneField(
-              controller: phoneController,
-              decoration: const InputDecoration(
-                labelText: 'Phone Number',
-                hintStyle: TextStyle(color: Colors.white70),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Color(0xffE4E7EB),
-                  ),
+            const SizedBox(height: 30),
+            TextFormField(
+              decoration: InputDecoration(
+                labelText: 'OTP',
+                labelStyle: const TextStyle(color: Colors.white70),
+                hintStyle: const TextStyle(color: Colors.white70),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Color(0xffE4E7EB)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Color(0xffE4E7EB)),
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
               style: const TextStyle(color: Colors.white),
-              dropdownTextStyle: const TextStyle(color: Colors.white),
-              initialCountryCode: 'US',
-              onChanged: (phone) {
-                print(phone.completeNumber);
-              },
+              keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
-
-
-                String otp = generateOTP();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => OTPVerificationPage(otp: otp),
-                  ),
-                );
+                Navigator.pushNamed(context, HomePage.id);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.teal,
@@ -85,12 +65,11 @@ class _WhatsAppAuthorizationState extends State<WhatsAppAuthorization> {
               child: const Padding(
                 padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 40.0),
                 child: Text(
-                  'Generate OTP',
+                  'Verify OTP',
                   style: TextStyle(fontSize: 16, color: Colors.black),
                 ),
               ),
             ),
-
             const Spacer(),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
